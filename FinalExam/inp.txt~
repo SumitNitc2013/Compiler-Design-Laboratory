@@ -1,0 +1,17 @@
+decl
+	queue var;
+enddecl
+
+integer main()
+{
+	decl
+		integer x;
+	enddecl
+	
+	begin
+		enque(var,45);
+		x=deque(var);
+		write(x);
+		return 0;
+	end
+}

@@ -1,0 +1,54 @@
+%{
+//if you want the space to be reconized as a token also then put space in single quotes
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+int array[26]={0};
+#define YYSTYPE tnode*	
+#include "stline.h"
+#include "stline.c"
+int x;	
+%}
+
+%token NUM ID READ WRITE
+%right '='
+%left '+' '-'
+%left '*' '/'
+%right '^'
+
+%%  
+	start: start '\n'    {evaluate($1);exit(0);}
+	     | start stmt    {char c[10];strcpy(c,"pt");$$=makeNameNode(c,$1,$2);}
+	     | stmt          {$$=$1;}
+	     ;
+	stmt: ID'='E';'    {char c[10];strcpy(c,"=");$$=makeNameNode(c,$1,$3);}
+	    | READ'('ID')'';' {char c[10];strcpy(c,"READ");$$=makeNameNode(c,$3,NULL);}
+	    | WRITE'('E')'';' {char c[10];strcpy(c,"WRITE");$$=makeNameNode(c,$3,NULL);}
+	    ;
+
+	  E: E '+' E	{char c[10];strcpy(c,"+");$$=makeNameNode(c,$1,$3);}
+	   | E '-' E	{char c[10];strcpy(c,"-");$$=makeNameNode(c,$1,$3);}
+       	   | E '*' E	{char c[10];strcpy(c,"*");$$=makeNameNode(c,$1,$3);}
+	   | E '/' E	{char c[10];strcpy(c,"/");$$=makeNameNode(c,$1,$3);}
+	   | E '^' E   {char c[10];strcpy(c,"^");$$=makeNameNode(c,$1,$3);}
+	   | '('E')'   {$$=$2;}
+	   | ID        {$$=$1;}
+	   | NUM       {$$=$1;}
+	   ;
+%%
+
+ yyerror(const char* x)
+{
+	printf("error %s\n",x);
+}
+
+main()
+{
+	yyparse();
+	return 0;
+}
+
+ 	
+
+	

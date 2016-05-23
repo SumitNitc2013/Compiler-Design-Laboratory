@@ -1,0 +1,6 @@
+begin
+x=5;y=6;
+read(z);
+c=x+y*z;
+write(c);
+end

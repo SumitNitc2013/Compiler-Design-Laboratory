@@ -1,0 +1,566 @@
+#include "y.tab.h"
+int x,ans;
+idlist* make_id_node(char* NAME,int size)
+{
+	//printf("in make_id_node\n");
+	idlist* temp;
+	temp=(idlist*)malloc(sizeof(idlist));
+	temp->NAME=(char*)malloc(50*sizeof(char));
+	strcpy(temp->NAME,NAME);
+	temp->size=size;
+	temp->next=NULL;
+	//printf("out make_id_node\n");
+	return temp;
+}
+
+void insert_id(idlist* node)
+{
+	//printf("in insert_id\n");
+	if(id_tail==NULL && id_head==NULL)
+	{
+		id_head=node;
+		id_tail=node;
+	}
+
+	else
+	{
+		id_tail->next=node;
+		id_tail=node;
+	}
+	//printf("out insert_id\n");
+}
+
+gsymbol* lookup(char* NAME)
+{
+	gsymbol* temp=head;
+	while(temp!=NULL)
+	{
+		if(strcmp(temp->NAME,NAME)==0)
+			return temp;
+		temp=temp->NEXT;
+	}
+	return NULL;	
+}
+
+
+void install(gsymbol* node)
+{
+	//printf("in install\n");
+	node->NEXT=head;
+	head=node;
+	//printf("out install\n");
+}
+
+
+gsymbol* make_gsymbol_node(char* NAME, int type, int size)
+{
+	//printf("in make_gsymbol_node\n");
+	//printf("creating g node: %s %d\n",NAME,type);
+	gsymbol* temp;
+	temp=(gsymbol*)malloc(sizeof(gsymbol));
+	temp->NAME=(char*)malloc(50*sizeof(char));
+	strcpy(temp->NAME,NAME);
+	temp->TYPE=type;
+	temp->SIZE=size;
+	temp->NEXT=NULL;
+	temp->BINDING=indxe+1;
+	indxe=indxe+size;
+	return temp;
+	//printf("out make_gsymbol_node\n");
+}
+
+tnode* makeNumLeafNode(int n)
+{
+	//printf("jha ji\n");
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	leaf->TYPE=INT;
+	leaf->NODETYPE=NUM;
+	leaf->val=n;
+	leaf->NAME=NULL;
+	leaf->left=NULL;
+	leaf->mid=NULL;
+	leaf->right=NULL;
+	return leaf;
+}
+
+tnode* makeVarLeafNode(char* var)
+{
+	//printf("in var leaf node\n");
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	//gsymbol *temp;
+	//temp=lookup(var);
+	//if(temp!=NULL)
+	//{
+	//	leaf->TYPE=temp->TYPE;
+	//	leaf->Gentry=temp;
+	//}
+	leaf->NODETYPE=ID;
+	leaf->NAME=(char*)malloc(50*sizeof(char));
+	strcpy(leaf->NAME,var);
+	leaf->left=NULL;
+	leaf->mid=NULL;
+	leaf->right=NULL;
+	//printf("out var leaf node\n");
+	return leaf;
+}
+
+tnode* makeNameNode(int c,tnode* left,tnode* mid,tnode* right)
+{
+	tnode* name_node;
+	name_node=(tnode*)malloc(sizeof(tnode));
+	switch(c)
+	{
+		case PLUS:
+			if()
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=INT;
+			name_node->NODETYPE=PLUS;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case MINUS:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!!TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=INT;
+			name_node->NODETYPE=MINUS;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case MUL:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=INT;
+			name_node->NODETYPE=MUL;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+
+		case DIV:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=INT;
+			name_node->NODETYPE=DIV;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case EXP:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=INT;
+			name_node->NODETYPE=EXP;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case LT:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=LT;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+
+		case GT:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=GT;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+
+
+		case EQ:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=EQ;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case NE:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=NE;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case LE:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=LE;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case GE:
+			if(left->TYPE!=INT || right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=BOOL;
+			name_node->NODETYPE=GE;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+
+		case ARRAY:
+				if(right->TYPE!=INT)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->NODETYPE=ARRAY;
+			name_node->TYPE=left->TYPE;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case EQUAL:
+		//printf("in making name_node\n");
+		//printf("type left: %d\n",left->TYPE);
+		//printf("type right:%d\n",right->TYPE);
+			 if(left->TYPE!=right->TYPE)
+				{
+					printf("Compilation Error!!!! TYPE missmatch\n");
+					exit(0);
+				}
+
+			else
+			{
+					if(mid==NULL)
+					{
+						name_node->TYPE=VOID;
+						name_node->NODETYPE=EQUAL;
+						name_node->NAME=NULL;
+						name_node->left=left;
+						name_node->mid=mid;
+						name_node->right=right;
+					
+				//printf("out name_node\n");
+					}
+			 	   else
+					{
+						name_node->TYPE=VOID;
+						name_node->NODETYPE=EQUAL;
+						name_node->NAME=NULL;
+						name_node->left=makeNameNode(ARRAY,left,NULL,mid);
+						name_node->mid=NULL;
+						name_node->right=right;
+					//printf("out name_node\n");
+					}
+			}
+			break;
+
+		case READ:
+
+				if(left->TYPE!=INT)
+				{
+					printf("Compilation Error!!!! TYPE missmatch\n");
+					exit(0);
+				}
+				else
+				{
+					if(mid==NULL)
+					{
+						name_node->TYPE=VOID;
+						name_node->NODETYPE=READ;
+						name_node->NAME=NULL;
+						name_node->left=left;
+						name_node->mid=mid;
+						name_node->right=right;
+					}
+					else
+					{
+						name_node->TYPE=VOID;
+						name_node->NODETYPE=READ;
+						name_node->NAME=NULL;
+						name_node->left=makeNameNode(ARRAY,left,NULL,mid);
+						name_node->mid=NULL;
+						name_node->right=right;
+					}
+				}
+				break;
+
+		case WRITE:
+		//printf("in WRITE node\n");
+			
+				if(left->TYPE!=INT)
+					{
+						printf("Compilation Error!!!! TYPE missmatch\n");
+						exit(0);
+					}
+				else
+					{
+						name_node->TYPE=VOID;
+						name_node->NODETYPE=WRITE;
+						name_node->NAME=NULL;
+						name_node->left=left;
+						name_node->mid=mid;
+						name_node->right=right;
+					}
+				
+				//printf("out WRITE node\n");
+					break;
+
+		case IF:
+				if(left->TYPE!=BOOL)
+				{
+					printf("Compilation Error!!!! TYPE missmatch\n");
+					exit(0);
+				}
+				name_node->TYPE=VOID;
+				name_node->NODETYPE=IF;
+				name_node->NAME=NULL;
+				name_node->left=left;
+				name_node->mid=mid;
+				name_node->right=right;
+				break;
+
+		case WHILE:
+			if(left->TYPE!=BOOL)
+			{
+				printf("Compilation Error!!!! TYPE missmatch\n");
+				exit(0);
+			}
+			name_node->TYPE=VOID;
+			name_node->NODETYPE=WHILE;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		case DUMMY:
+			name_node->TYPE=VOID;
+			name_node->NODETYPE=DUMMY;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+	
+
+		case INT:
+			//printf("in INT\n");
+			name_node->TYPE=INT;
+			//name_node->NODETYPE=2;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+			//printf("out INT\n");
+
+		case BOOL:
+			name_node->TYPE=BOOL;
+			//name_node->NODETYPE=2;
+			name_node->NAME=NULL;
+			name_node->left=left;
+			name_node->mid=mid;
+			name_node->right=right;
+			break;
+
+		default:
+				break;
+
+	}
+return name_node;
+}
+
+int evaluate(tnode* r)
+{
+	if(r==NULL)
+	{
+		return 0;
+	}
+	switch(r->NODETYPE)
+	{
+		case NUM:
+			return r->val;
+			break;
+
+		case ID:
+			return array[r->Gentry->BINDING];
+			break;
+
+		case ARRAY:
+			return array[r->left->Gentry->BINDING + evaluate(r->right)];
+			break;
+
+		case PLUS:
+			return evaluate(r->left)+evaluate(r->right);
+			break;
+
+		case MINUS:
+			return evaluate(r->left)- evaluate(r->right);
+			break;
+
+		case MUL:
+			return evaluate(r->left) * evaluate(r->right);
+			break;
+
+		case DIV:
+			return evaluate(r->left) / evaluate(r->right);
+			break;
+
+		case EXP:
+			return pow(evaluate(r->left),evaluate(r->right));
+			break;
+
+		case LT:
+			return evaluate(r->left) < evaluate(r->right);
+			break;
+
+		case GT:
+			return evaluate(r->left) > evaluate(r->right);
+			break;
+
+		case EQ:
+			return evaluate(r->left) == evaluate(r->right);
+			break;
+
+		case NE:
+			return evaluate(r->left) != evaluate(r->right);
+			break;
+
+		case LE:
+			return evaluate(r->left) <= evaluate(r->right);
+			break;
+
+		case GE:
+			return evaluate(r->left) >= evaluate(r->right);
+			break;
+
+		case EQUAL:
+			if(r->left->NODETYPE==ARRAY)
+			{
+				array[r->left->left->Gentry->BINDING + evaluate(r->left->right)]=evaluate(r->right);
+			}
+			else
+			{
+				array[r->left->Gentry->BINDING]=evaluate(r->right);
+			}
+			return 0;
+			break;
+
+		case READ:
+			scanf("%d",&x);
+			if(r->left->NODETYPE==ARRAY)
+			{
+				array[r->left->left->Gentry->BINDING + evaluate(r->left->right)]=x;
+			}
+			else
+			{
+				array[r->left->Gentry->BINDING]=x;
+			}
+			return 0;
+			break;
+
+		case WRITE:
+			 ans=evaluate(r->left);
+			printf("%d\n",ans);
+			return 0;
+			break;
+
+		case IF:
+			if(r->mid==NULL)
+			{
+				if(evaluate(r->left)==1)
+					evaluate(r->right);
+			}
+		
+			else
+			{
+				if(evaluate(r->left)==1)
+					evaluate(r->mid);
+				else
+					evaluate(r->right);
+			}
+			return 0;
+			break;
+
+		case WHILE:
+			while(evaluate(r->left)==1)
+					evaluate(r->right);
+			return 0;
+			break;
+
+		case DUMMY:
+			evaluate(r->left);
+			evaluate(r->right);
+			return 0;
+			break;
+			
+	}
+}

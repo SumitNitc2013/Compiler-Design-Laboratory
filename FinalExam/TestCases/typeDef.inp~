@@ -1,0 +1,36 @@
+type
+typedef name1{
+	integer x,y,z;
+	boolean a;
+}
+typedef name2{
+	integer x,y,z;
+	name2 a;
+}
+endtype
+
+decl
+	name1 b;
+	name2 c;
+	integer a;
+enddecl
+
+integer main(){
+	begin
+		b=allocate();
+		free(b);
+		write(b);
+		b=allocate();
+		write(b);
+		c=allocate();
+		write(c);
+		c.x=5;
+		write(c.x);
+		c.z=56;
+		write(c.z);
+		c.a=allocate();
+		write(c.a);
+		return 1;
+	end
+}
+		

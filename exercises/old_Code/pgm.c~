@@ -1,0 +1,155 @@
+tnode* makeNumLeafNode(int n)
+{
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	leaf->NODETYPE=0;
+	leaf->val=n;
+	leaf->NAME=NULL;
+	leaf->left=NULL;
+	leaf->right=NULL;
+	return leaf;
+}
+
+tnode* makeVarLeafNode(char var)
+{
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	leaf->NODETYPE=1;
+	leaf->NAME=NULL;
+	leaf->var=var;
+	leaf->left=NULL;
+	leaf->right=NULL;
+	return leaf;
+}
+
+tnode* makeNameNode(char c[],tnode* left,tnode* right)
+{
+	tnode* name_node;
+	name_node=(tnode*)malloc(sizeof(tnode));
+	name_node->NODETYPE=2;
+	name_node->NAME=(char*)malloc(10*sizeof(char));
+	strcpy(name_node->NAME,c);
+	name_node->left=left;
+	name_node->right=right;
+	return name_node;
+}
+
+int evaluate(tnode* r)
+{
+	//printf("in evl %p\n",r);
+	//printf("Jha\n");
+	if(r==NULL)
+	{
+		//printf("Jha\n");
+		return 0;
+	}
+
+	if(r->NODETYPE==1)
+	{
+		//printf("%d\n",array[r->var - 97]);
+		return array[r->var-97];
+	}
+		
+
+	else if(r->NODETYPE==0)
+		return r->val;
+
+	else      //means we are sure that NODETYPE is 2 at this point
+	{
+		if(strcmp(r->NAME,"+")==0)
+		{
+			return evaluate(r->left)+evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,"-")==0)
+		{
+			return evaluate(r->left)- evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,"*")==0)
+		{
+			return evaluate(r->left) * evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,"/")==0)
+		{
+			return evaluate(r->left) / evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,"^")==0)
+		{
+			return pow(evaluate(r->left),evaluate(r->right));
+		}
+
+		else if(strcmp(r->NAME,"<")==0)
+		{
+			return evaluate(r->left) < evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,">")==0)
+		{
+			return evaluate(r->left) > evaluate(r->right);
+		}
+
+		else if(strcmp(r->NAME,"==")==0)
+		{
+			return evaluate(r->left) == evaluate(r->right);
+		
+		}
+
+		else if(strcmp(r->NAME,"=")==0)
+		{
+			//printf("Hello\n");
+			//printf("%d\n",evaluate(r->right));
+			array[r->left->var - 97]=evaluate(r->right);
+			return 0;
+		
+		}
+
+
+		else if(strcmp(r->NAME,"READ")==0)
+		{
+			int x;
+			scanf("%d",&x);
+			array[r->left->var - 97]=x;
+			return 0;
+			
+		}
+
+
+		else if(strcmp(r->NAME,"WRITE")==0)
+		{
+			int ans=evaluate(r->left);
+			printf("%d\n",ans);
+			return 0;
+			
+		}
+
+
+		else if(strcmp(r->NAME,"IF")==0)
+		{
+			if(evaluate(r->left)==1)
+				evaluate(r->right);
+			return 0;
+		
+		}
+
+
+		else if(strcmp(r->NAME,"WHILE")==0)
+		{
+			while(evaluate(r->left)==1)
+				evaluate(r->right);
+			return 0;
+		
+		}
+
+		else if(strcmp(r->NAME,"pt")==0)
+		{
+			evaluate(r->left);
+			evaluate(r->right);
+			return 0;
+		
+		}
+			
+	}
+}

@@ -1,0 +1,19 @@
+decl
+	integer a;
+	integer er(integer b);
+enddecl
+
+integer er(integer b){
+	begin
+	return b;
+	end
+}
+
+integer main(){
+	decl
+	enddecl
+	begin
+		write(er(8));
+		return 9;
+	end
+}

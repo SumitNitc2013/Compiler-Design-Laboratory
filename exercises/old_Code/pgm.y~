@@ -1,0 +1,60 @@
+%{
+//if you want the space to be reconized as a token also then put space in single quotes
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+int array[26]={0};
+#define YYSTYPE tnode*	
+#include "pgm.h"
+#include "pgm.c"
+int x;	
+%}
+
+%token NUM ID READ WRITE IF THEN ENDIF WHILE DO ENDWHILE LT GT EQ
+
+%right '='
+%left LT GT EQ
+%left '+' '-'
+%left '*' '/'
+%right '^'
+
+%%  
+	start: start '\n'    {exit(0);}
+	     | start stmt  
+	     | stmt         
+	     ;
+	stmt: ID'='E';'    {array[$1->var-97]=evaluate($3);}
+	    | READ'('ID')'';' {scanf("%d",&x);array[$3->var-97]=x;}
+	    | WRITE'('E')'';' {printf("%d\n",evaluate($3));}
+            | IF '('E')' THEN start ENDIF';'
+	    | WHILE '('E')' DO start ENDWHILE';'
+	    ;
+
+	  E: E '+' E	{$$=makeOperatorNode('+',$1,$3);}
+	   | E '-' E	{$$=makeOperatorNode('-',$1,$3);}
+           | E '*' E	{$$=makeOperatorNode('*',$1,$3);}
+	   | E '/' E	{$$=makeOperatorNode('/',$1,$3);}
+	   | E '^' E   {$$=makeOperatorNode('^',$1,$3);}
+	   | '('E')'   {$$=$2;}
+	   | '('E LT E')' {$$=makeOperatorNode('<',$2,$4);}
+	   | '('E GT E')' {$$=makeOperatorNode('>',$2,$4);}
+	   | '('E EQ E')' {$$=makeOperatorNode('#',$2,$4);}
+	   | ID        {$$=$1;}
+	   | NUM       {$$=$1;}
+	   ;
+%%
+
+ yyerror(const char* x)
+{
+	printf("error %s\n",x);
+}
+
+main()
+{
+	yyparse();
+	return 0;
+}
+
+ 	
+
+	

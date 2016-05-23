@@ -1,0 +1,43 @@
+//this is a header file
+struct node
+{
+	//NODETYPE=0-NUM,1-ID,2-NAME etc
+	int NODETYPE;
+	int val;
+	char* NAME;
+	struct node *left,*mid, *right;
+};
+
+typedef struct node tnode;
+
+struct Gsymbol {
+
+char *NAME; 
+
+int TYPE; 
+
+int SIZE; 
+
+int BINDING; 
+
+struct Gsymbol *NEXT; // Pointer to next Symbol Table Entry */
+
+};
+typedef struct Gsymbol gsymbol;
+
+tnode* makeNumLeafNode(int n);
+
+tnode* makeVarLeafNode(char var);
+
+tnode* makeNameNode(char c[],tnode* left,tnode* mid,tnode* right);
+
+int evaluate(tnode* r);     //r is the root of the tree
+
+gsymbol* lookup(char* NAME);
+
+void install(gsymbol* node);
+
+gsymbol* make_gsymbol_node(char* NAME, int type, int size);
+
+
+

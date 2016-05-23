@@ -1,0 +1,4 @@
+lex filename.l
+yacc -d filename.y
+gcc lex.yy.c y.tab.c
+./a.out

@@ -1,0 +1,3057 @@
+Terminals unused in grammar
+
+   CALL
+   FUNCTION
+   CONNECT
+   ARRAY
+   FLD
+
+
+Grammar
+
+    0 $accept: Prog $end
+
+    1 Prog: TypeDefBlock GDefblock Fdeflist Mainblock
+
+    2 TypeDefBlock: TYPE1 TypeDefList ENDTYPE1
+    3             | %empty
+
+    4 TypeDefList: TypeDefList TypeDef
+    5            | TypeDef
+
+    6 TypeDef: HeaDer '{' FieldDeclList '}'
+
+    7 HeaDer: TYPEDEF ID
+
+    8 FieldDeclList: FieldDeclList FieldDecl
+    9              | FieldDecl
+
+   10 FieldDecl: type idlist3 ';'
+
+   11 idlist3: idlist3 ',' id3
+   12        | id3
+
+   13 id3: ID
+
+   14 type: ID
+
+   15 GDefblock: DECL GDefList ENDDECL
+   16          | %empty
+
+   17 GDefList: GDefList GDecl
+   18         | GDecl
+
+   19 GDecl: type GIdList ';'
+
+   20 GIdList: GIdList ',' GId
+   21        | GId
+
+   22 GId: ID
+   23    | ID '[' NUM ']'
+   24    | ID '(' ArgList ')'
+
+   25 ArgList: Args
+   26        | %empty
+
+   27 Args: Arg1 Arg2
+
+   28 Arg1: Arg1 arg
+   29     | %empty
+
+   30 arg: type idlist ';'
+
+   31 idlist: idlist ',' id
+   32       | id
+
+   33 id: ID
+   34   | '&' ID
+
+   35 Arg2: type idlist
+
+   36 Fdeflist: Fdeflist FDef
+   37         | %empty
+
+   38 FDef: Header '{' LDefblock Body '}'
+
+   39 Header: type ID '(' ArgList ')'
+
+   40 LDefblock: DECL LDeflist ENDDECL
+   41          | %empty
+
+   42 LDeflist: LDeflist LDecl
+   43         | LDecl
+
+   44 LDecl: type idlist2 ';'
+
+   45 idlist2: idlist2 ',' id2
+   46        | id2
+
+   47 id2: ID
+
+   48 Body: BEGIN1 S Ret END1
+
+   49 S: S stmt
+   50  | %empty
+
+   51 stmt: ID EQUALS E ';'
+   52     | ID '[' E ']' EQUALS E ';'
+   53     | FIELD EQUALS E ';'
+   54     | ENQUE '(' ID ',' E ')' ';'
+   55     | READ '(' ID ')' ';'
+   56     | READ '(' ID '[' E ']' ')' ';'
+   57     | READ '(' FIELD ')' ';'
+   58     | WRITE '(' E ')' ';'
+   59     | IF '(' E ')' THEN S ELSE S ENDIF ';'
+   60     | IF '(' E ')' THEN S ENDIF ';'
+   61     | WHILE '(' E ')' DO S ENDWHILE ';'
+   62     | ID EQUALS ALLOC '(' ')' ';'
+   63     | ID '[' E ']' EQUALS ALLOC '(' ')' ';'
+   64     | FIELD EQUALS ALLOC '(' ')' ';'
+   65     | FREE '(' ID ')' ';'
+   66     | FREE '(' ID '[' E ']' ')' ';'
+   67     | FREE '(' FIELD ')' ';'
+
+   68 FIELD: FIELD DOT ID
+   69      | ID DOT ID
+   70      | ID '[' E ']' DOT ID
+
+   71 args: ars
+   72     | %empty
+
+   73 ars: ars ',' E
+   74    | E
+
+   75 E: E PLUS E
+   76  | E MINUS E
+   77  | E MUL E
+   78  | E DIV E
+   79  | E MOD E
+   80  | '(' E ')'
+   81  | E LT E
+   82  | E GT E
+   83  | E EQ E
+   84  | E NE E
+   85  | E LE E
+   86  | E GE E
+   87  | E AND E
+   88  | E OR E
+   89  | NOT E
+   90  | ID '(' args ')'
+   91  | FIELD
+   92  | DEQUE '(' ID ')'
+   93  | NUM
+   94  | ID
+   95  | ID '[' E ']'
+
+   96 Ret: RETURN E ';'
+
+   97 Mainblock: type MAIN '(' ')' '{' LDefblock Body '}'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'&' (38) 34
+'(' (40) 24 39 54 55 56 57 58 59 60 61 62 63 64 65 66 67 80 90 92 97
+')' (41) 24 39 54 55 56 57 58 59 60 61 62 63 64 65 66 67 80 90 92 97
+',' (44) 11 20 31 45 54 73
+';' (59) 10 19 30 44 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+    67 96
+'[' (91) 23 52 56 63 66 70 95
+']' (93) 23 52 56 63 66 70 95
+'{' (123) 6 38 97
+'}' (125) 6 38 97
+error (256)
+NUM (258) 23 93
+ID (259) 7 13 14 22 23 24 33 34 39 47 51 52 54 55 56 62 63 65 66 68
+    69 70 90 92 94 95
+READ (260) 55 56 57
+WRITE (261) 58
+IF (262) 59 60
+THEN (263) 59 60
+ENDIF (264) 59 60
+WHILE (265) 61
+DO (266) 61
+MAIN (267) 97
+RETURN (268) 96
+CALL (269)
+FUNCTION (270)
+ENDWHILE (271) 61
+BEGIN1 (272) 48
+END1 (273) 48
+DECL (274) 15 40
+ENDDECL (275) 15 40
+ELSE (276) 59
+CONNECT (277)
+LT (278) 81
+GT (279) 82
+LE (280) 85
+GE (281) 86
+EQ (282) 83
+NE (283) 84
+PLUS (284) 75
+MINUS (285) 76
+MUL (286) 77
+DIV (287) 78
+MOD (288) 79
+EQUALS (289) 51 52 53 62 63 64
+ARRAY (290)
+AND (291) 87
+OR (292) 88
+NOT (293) 89
+TYPE1 (294) 2
+ENDTYPE1 (295) 2
+TYPEDEF (296) 7
+FREE (297) 65 66 67
+ALLOC (298) 62 63 64
+FLD (299)
+ENQUE (300) 54
+DEQUE (301) 92
+DOT (302) 68 69 70
+
+
+Nonterminals, with rules where they appear
+
+$accept (57)
+    on left: 0
+Prog (58)
+    on left: 1, on right: 0
+TypeDefBlock (59)
+    on left: 2 3, on right: 1
+TypeDefList (60)
+    on left: 4 5, on right: 2 4
+TypeDef (61)
+    on left: 6, on right: 4 5
+HeaDer (62)
+    on left: 7, on right: 6
+FieldDeclList (63)
+    on left: 8 9, on right: 6 8
+FieldDecl (64)
+    on left: 10, on right: 8 9
+idlist3 (65)
+    on left: 11 12, on right: 10 11
+id3 (66)
+    on left: 13, on right: 11 12
+type (67)
+    on left: 14, on right: 10 19 30 35 39 44 97
+GDefblock (68)
+    on left: 15 16, on right: 1
+GDefList (69)
+    on left: 17 18, on right: 15 17
+GDecl (70)
+    on left: 19, on right: 17 18
+GIdList (71)
+    on left: 20 21, on right: 19 20
+GId (72)
+    on left: 22 23 24, on right: 20 21
+ArgList (73)
+    on left: 25 26, on right: 24 39
+Args (74)
+    on left: 27, on right: 25
+Arg1 (75)
+    on left: 28 29, on right: 27 28
+arg (76)
+    on left: 30, on right: 28
+idlist (77)
+    on left: 31 32, on right: 30 31 35
+id (78)
+    on left: 33 34, on right: 31 32
+Arg2 (79)
+    on left: 35, on right: 27
+Fdeflist (80)
+    on left: 36 37, on right: 1 36
+FDef (81)
+    on left: 38, on right: 36
+Header (82)
+    on left: 39, on right: 38
+LDefblock (83)
+    on left: 40 41, on right: 38 97
+LDeflist (84)
+    on left: 42 43, on right: 40 42
+LDecl (85)
+    on left: 44, on right: 42 43
+idlist2 (86)
+    on left: 45 46, on right: 44 45
+id2 (87)
+    on left: 47, on right: 45 46
+Body (88)
+    on left: 48, on right: 38 97
+S (89)
+    on left: 49 50, on right: 48 49 59 60 61
+stmt (90)
+    on left: 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67, on right:
+    49
+FIELD (91)
+    on left: 68 69 70, on right: 53 57 64 67 68 91
+args (92)
+    on left: 71 72, on right: 90
+ars (93)
+    on left: 73 74, on right: 71 73
+E (94)
+    on left: 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92
+    93 94 95, on right: 51 52 53 54 56 58 59 60 61 63 66 70 73 74 75
+    76 77 78 79 80 81 82 83 84 85 86 87 88 89 95 96
+Ret (95)
+    on left: 96, on right: 48
+Mainblock (96)
+    on left: 97, on right: 1
+
+
+State 0
+
+    0 $accept: . Prog $end
+
+    TYPE1  shift, and go to state 1
+
+    $default  reduce using rule 3 (TypeDefBlock)
+
+    Prog          go to state 2
+    TypeDefBlock  go to state 3
+
+
+State 1
+
+    2 TypeDefBlock: TYPE1 . TypeDefList ENDTYPE1
+
+    TYPEDEF  shift, and go to state 4
+
+    TypeDefList  go to state 5
+    TypeDef      go to state 6
+    HeaDer       go to state 7
+
+
+State 2
+
+    0 $accept: Prog . $end
+
+    $end  shift, and go to state 8
+
+
+State 3
+
+    1 Prog: TypeDefBlock . GDefblock Fdeflist Mainblock
+
+    DECL  shift, and go to state 9
+
+    $default  reduce using rule 16 (GDefblock)
+
+    GDefblock  go to state 10
+
+
+State 4
+
+    7 HeaDer: TYPEDEF . ID
+
+    ID  shift, and go to state 11
+
+
+State 5
+
+    2 TypeDefBlock: TYPE1 TypeDefList . ENDTYPE1
+    4 TypeDefList: TypeDefList . TypeDef
+
+    ENDTYPE1  shift, and go to state 12
+    TYPEDEF   shift, and go to state 4
+
+    TypeDef  go to state 13
+    HeaDer   go to state 7
+
+
+State 6
+
+    5 TypeDefList: TypeDef .
+
+    $default  reduce using rule 5 (TypeDefList)
+
+
+State 7
+
+    6 TypeDef: HeaDer . '{' FieldDeclList '}'
+
+    '{'  shift, and go to state 14
+
+
+State 8
+
+    0 $accept: Prog $end .
+
+    $default  accept
+
+
+State 9
+
+   15 GDefblock: DECL . GDefList ENDDECL
+
+    ID  shift, and go to state 15
+
+    type      go to state 16
+    GDefList  go to state 17
+    GDecl     go to state 18
+
+
+State 10
+
+    1 Prog: TypeDefBlock GDefblock . Fdeflist Mainblock
+
+    $default  reduce using rule 37 (Fdeflist)
+
+    Fdeflist  go to state 19
+
+
+State 11
+
+    7 HeaDer: TYPEDEF ID .
+
+    $default  reduce using rule 7 (HeaDer)
+
+
+State 12
+
+    2 TypeDefBlock: TYPE1 TypeDefList ENDTYPE1 .
+
+    $default  reduce using rule 2 (TypeDefBlock)
+
+
+State 13
+
+    4 TypeDefList: TypeDefList TypeDef .
+
+    $default  reduce using rule 4 (TypeDefList)
+
+
+State 14
+
+    6 TypeDef: HeaDer '{' . FieldDeclList '}'
+
+    ID  shift, and go to state 15
+
+    FieldDeclList  go to state 20
+    FieldDecl      go to state 21
+    type           go to state 22
+
+
+State 15
+
+   14 type: ID .
+
+    $default  reduce using rule 14 (type)
+
+
+State 16
+
+   19 GDecl: type . GIdList ';'
+
+    ID  shift, and go to state 23
+
+    GIdList  go to state 24
+    GId      go to state 25
+
+
+State 17
+
+   15 GDefblock: DECL GDefList . ENDDECL
+   17 GDefList: GDefList . GDecl
+
+    ID       shift, and go to state 15
+    ENDDECL  shift, and go to state 26
+
+    type   go to state 16
+    GDecl  go to state 27
+
+
+State 18
+
+   18 GDefList: GDecl .
+
+    $default  reduce using rule 18 (GDefList)
+
+
+State 19
+
+    1 Prog: TypeDefBlock GDefblock Fdeflist . Mainblock
+   36 Fdeflist: Fdeflist . FDef
+
+    ID  shift, and go to state 15
+
+    type       go to state 28
+    FDef       go to state 29
+    Header     go to state 30
+    Mainblock  go to state 31
+
+
+State 20
+
+    6 TypeDef: HeaDer '{' FieldDeclList . '}'
+    8 FieldDeclList: FieldDeclList . FieldDecl
+
+    ID   shift, and go to state 15
+    '}'  shift, and go to state 32
+
+    FieldDecl  go to state 33
+    type       go to state 22
+
+
+State 21
+
+    9 FieldDeclList: FieldDecl .
+
+    $default  reduce using rule 9 (FieldDeclList)
+
+
+State 22
+
+   10 FieldDecl: type . idlist3 ';'
+
+    ID  shift, and go to state 34
+
+    idlist3  go to state 35
+    id3      go to state 36
+
+
+State 23
+
+   22 GId: ID .
+   23    | ID . '[' NUM ']'
+   24    | ID . '(' ArgList ')'
+
+    '['  shift, and go to state 37
+    '('  shift, and go to state 38
+
+    $default  reduce using rule 22 (GId)
+
+
+State 24
+
+   19 GDecl: type GIdList . ';'
+   20 GIdList: GIdList . ',' GId
+
+    ';'  shift, and go to state 39
+    ','  shift, and go to state 40
+
+
+State 25
+
+   21 GIdList: GId .
+
+    $default  reduce using rule 21 (GIdList)
+
+
+State 26
+
+   15 GDefblock: DECL GDefList ENDDECL .
+
+    $default  reduce using rule 15 (GDefblock)
+
+
+State 27
+
+   17 GDefList: GDefList GDecl .
+
+    $default  reduce using rule 17 (GDefList)
+
+
+State 28
+
+   39 Header: type . ID '(' ArgList ')'
+   97 Mainblock: type . MAIN '(' ')' '{' LDefblock Body '}'
+
+    ID    shift, and go to state 41
+    MAIN  shift, and go to state 42
+
+
+State 29
+
+   36 Fdeflist: Fdeflist FDef .
+
+    $default  reduce using rule 36 (Fdeflist)
+
+
+State 30
+
+   38 FDef: Header . '{' LDefblock Body '}'
+
+    '{'  shift, and go to state 43
+
+
+State 31
+
+    1 Prog: TypeDefBlock GDefblock Fdeflist Mainblock .
+
+    $default  reduce using rule 1 (Prog)
+
+
+State 32
+
+    6 TypeDef: HeaDer '{' FieldDeclList '}' .
+
+    $default  reduce using rule 6 (TypeDef)
+
+
+State 33
+
+    8 FieldDeclList: FieldDeclList FieldDecl .
+
+    $default  reduce using rule 8 (FieldDeclList)
+
+
+State 34
+
+   13 id3: ID .
+
+    $default  reduce using rule 13 (id3)
+
+
+State 35
+
+   10 FieldDecl: type idlist3 . ';'
+   11 idlist3: idlist3 . ',' id3
+
+    ';'  shift, and go to state 44
+    ','  shift, and go to state 45
+
+
+State 36
+
+   12 idlist3: id3 .
+
+    $default  reduce using rule 12 (idlist3)
+
+
+State 37
+
+   23 GId: ID '[' . NUM ']'
+
+    NUM  shift, and go to state 46
+
+
+State 38
+
+   24 GId: ID '(' . ArgList ')'
+
+    ID        reduce using rule 29 (Arg1)
+    $default  reduce using rule 26 (ArgList)
+
+    ArgList  go to state 47
+    Args     go to state 48
+    Arg1     go to state 49
+
+
+State 39
+
+   19 GDecl: type GIdList ';' .
+
+    $default  reduce using rule 19 (GDecl)
+
+
+State 40
+
+   20 GIdList: GIdList ',' . GId
+
+    ID  shift, and go to state 23
+
+    GId  go to state 50
+
+
+State 41
+
+   39 Header: type ID . '(' ArgList ')'
+
+    '('  shift, and go to state 51
+
+
+State 42
+
+   97 Mainblock: type MAIN . '(' ')' '{' LDefblock Body '}'
+
+    '('  shift, and go to state 52
+
+
+State 43
+
+   38 FDef: Header '{' . LDefblock Body '}'
+
+    DECL  shift, and go to state 53
+
+    $default  reduce using rule 41 (LDefblock)
+
+    LDefblock  go to state 54
+
+
+State 44
+
+   10 FieldDecl: type idlist3 ';' .
+
+    $default  reduce using rule 10 (FieldDecl)
+
+
+State 45
+
+   11 idlist3: idlist3 ',' . id3
+
+    ID  shift, and go to state 34
+
+    id3  go to state 55
+
+
+State 46
+
+   23 GId: ID '[' NUM . ']'
+
+    ']'  shift, and go to state 56
+
+
+State 47
+
+   24 GId: ID '(' ArgList . ')'
+
+    ')'  shift, and go to state 57
+
+
+State 48
+
+   25 ArgList: Args .
+
+    $default  reduce using rule 25 (ArgList)
+
+
+State 49
+
+   27 Args: Arg1 . Arg2
+   28 Arg1: Arg1 . arg
+
+    ID  shift, and go to state 15
+
+    type  go to state 58
+    arg   go to state 59
+    Arg2  go to state 60
+
+
+State 50
+
+   20 GIdList: GIdList ',' GId .
+
+    $default  reduce using rule 20 (GIdList)
+
+
+State 51
+
+   39 Header: type ID '(' . ArgList ')'
+
+    ID        reduce using rule 29 (Arg1)
+    $default  reduce using rule 26 (ArgList)
+
+    ArgList  go to state 61
+    Args     go to state 48
+    Arg1     go to state 49
+
+
+State 52
+
+   97 Mainblock: type MAIN '(' . ')' '{' LDefblock Body '}'
+
+    ')'  shift, and go to state 62
+
+
+State 53
+
+   40 LDefblock: DECL . LDeflist ENDDECL
+
+    ID  shift, and go to state 15
+
+    type      go to state 63
+    LDeflist  go to state 64
+    LDecl     go to state 65
+
+
+State 54
+
+   38 FDef: Header '{' LDefblock . Body '}'
+
+    BEGIN1  shift, and go to state 66
+
+    Body  go to state 67
+
+
+State 55
+
+   11 idlist3: idlist3 ',' id3 .
+
+    $default  reduce using rule 11 (idlist3)
+
+
+State 56
+
+   23 GId: ID '[' NUM ']' .
+
+    $default  reduce using rule 23 (GId)
+
+
+State 57
+
+   24 GId: ID '(' ArgList ')' .
+
+    $default  reduce using rule 24 (GId)
+
+
+State 58
+
+   30 arg: type . idlist ';'
+   35 Arg2: type . idlist
+
+    ID   shift, and go to state 68
+    '&'  shift, and go to state 69
+
+    idlist  go to state 70
+    id      go to state 71
+
+
+State 59
+
+   28 Arg1: Arg1 arg .
+
+    $default  reduce using rule 28 (Arg1)
+
+
+State 60
+
+   27 Args: Arg1 Arg2 .
+
+    $default  reduce using rule 27 (Args)
+
+
+State 61
+
+   39 Header: type ID '(' ArgList . ')'
+
+    ')'  shift, and go to state 72
+
+
+State 62
+
+   97 Mainblock: type MAIN '(' ')' . '{' LDefblock Body '}'
+
+    '{'  shift, and go to state 73
+
+
+State 63
+
+   44 LDecl: type . idlist2 ';'
+
+    ID  shift, and go to state 74
+
+    idlist2  go to state 75
+    id2      go to state 76
+
+
+State 64
+
+   40 LDefblock: DECL LDeflist . ENDDECL
+   42 LDeflist: LDeflist . LDecl
+
+    ID       shift, and go to state 15
+    ENDDECL  shift, and go to state 77
+
+    type   go to state 63
+    LDecl  go to state 78
+
+
+State 65
+
+   43 LDeflist: LDecl .
+
+    $default  reduce using rule 43 (LDeflist)
+
+
+State 66
+
+   48 Body: BEGIN1 . S Ret END1
+
+    $default  reduce using rule 50 (S)
+
+    S  go to state 79
+
+
+State 67
+
+   38 FDef: Header '{' LDefblock Body . '}'
+
+    '}'  shift, and go to state 80
+
+
+State 68
+
+   33 id: ID .
+
+    $default  reduce using rule 33 (id)
+
+
+State 69
+
+   34 id: '&' . ID
+
+    ID  shift, and go to state 81
+
+
+State 70
+
+   30 arg: type idlist . ';'
+   31 idlist: idlist . ',' id
+   35 Arg2: type idlist .
+
+    ';'  shift, and go to state 82
+    ','  shift, and go to state 83
+
+    $default  reduce using rule 35 (Arg2)
+
+
+State 71
+
+   32 idlist: id .
+
+    $default  reduce using rule 32 (idlist)
+
+
+State 72
+
+   39 Header: type ID '(' ArgList ')' .
+
+    $default  reduce using rule 39 (Header)
+
+
+State 73
+
+   97 Mainblock: type MAIN '(' ')' '{' . LDefblock Body '}'
+
+    DECL  shift, and go to state 53
+
+    $default  reduce using rule 41 (LDefblock)
+
+    LDefblock  go to state 84
+
+
+State 74
+
+   47 id2: ID .
+
+    $default  reduce using rule 47 (id2)
+
+
+State 75
+
+   44 LDecl: type idlist2 . ';'
+   45 idlist2: idlist2 . ',' id2
+
+    ';'  shift, and go to state 85
+    ','  shift, and go to state 86
+
+
+State 76
+
+   46 idlist2: id2 .
+
+    $default  reduce using rule 46 (idlist2)
+
+
+State 77
+
+   40 LDefblock: DECL LDeflist ENDDECL .
+
+    $default  reduce using rule 40 (LDefblock)
+
+
+State 78
+
+   42 LDeflist: LDeflist LDecl .
+
+    $default  reduce using rule 42 (LDeflist)
+
+
+State 79
+
+   48 Body: BEGIN1 S . Ret END1
+   49 S: S . stmt
+
+    ID      shift, and go to state 87
+    READ    shift, and go to state 88
+    WRITE   shift, and go to state 89
+    IF      shift, and go to state 90
+    WHILE   shift, and go to state 91
+    RETURN  shift, and go to state 92
+    FREE    shift, and go to state 93
+    ENQUE   shift, and go to state 94
+
+    stmt   go to state 95
+    FIELD  go to state 96
+    Ret    go to state 97
+
+
+State 80
+
+   38 FDef: Header '{' LDefblock Body '}' .
+
+    $default  reduce using rule 38 (FDef)
+
+
+State 81
+
+   34 id: '&' ID .
+
+    $default  reduce using rule 34 (id)
+
+
+State 82
+
+   30 arg: type idlist ';' .
+
+    $default  reduce using rule 30 (arg)
+
+
+State 83
+
+   31 idlist: idlist ',' . id
+
+    ID   shift, and go to state 68
+    '&'  shift, and go to state 69
+
+    id  go to state 98
+
+
+State 84
+
+   97 Mainblock: type MAIN '(' ')' '{' LDefblock . Body '}'
+
+    BEGIN1  shift, and go to state 66
+
+    Body  go to state 99
+
+
+State 85
+
+   44 LDecl: type idlist2 ';' .
+
+    $default  reduce using rule 44 (LDecl)
+
+
+State 86
+
+   45 idlist2: idlist2 ',' . id2
+
+    ID  shift, and go to state 74
+
+    id2  go to state 100
+
+
+State 87
+
+   51 stmt: ID . EQUALS E ';'
+   52     | ID . '[' E ']' EQUALS E ';'
+   62     | ID . EQUALS ALLOC '(' ')' ';'
+   63     | ID . '[' E ']' EQUALS ALLOC '(' ')' ';'
+   69 FIELD: ID . DOT ID
+   70      | ID . '[' E ']' DOT ID
+
+    EQUALS  shift, and go to state 101
+    DOT     shift, and go to state 102
+    '['     shift, and go to state 103
+
+
+State 88
+
+   55 stmt: READ . '(' ID ')' ';'
+   56     | READ . '(' ID '[' E ']' ')' ';'
+   57     | READ . '(' FIELD ')' ';'
+
+    '('  shift, and go to state 104
+
+
+State 89
+
+   58 stmt: WRITE . '(' E ')' ';'
+
+    '('  shift, and go to state 105
+
+
+State 90
+
+   59 stmt: IF . '(' E ')' THEN S ELSE S ENDIF ';'
+   60     | IF . '(' E ')' THEN S ENDIF ';'
+
+    '('  shift, and go to state 106
+
+
+State 91
+
+   61 stmt: WHILE . '(' E ')' DO S ENDWHILE ';'
+
+    '('  shift, and go to state 107
+
+
+State 92
+
+   96 Ret: RETURN . E ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 114
+
+
+State 93
+
+   65 stmt: FREE . '(' ID ')' ';'
+   66     | FREE . '(' ID '[' E ']' ')' ';'
+   67     | FREE . '(' FIELD ')' ';'
+
+    '('  shift, and go to state 115
+
+
+State 94
+
+   54 stmt: ENQUE . '(' ID ',' E ')' ';'
+
+    '('  shift, and go to state 116
+
+
+State 95
+
+   49 S: S stmt .
+
+    $default  reduce using rule 49 (S)
+
+
+State 96
+
+   53 stmt: FIELD . EQUALS E ';'
+   64     | FIELD . EQUALS ALLOC '(' ')' ';'
+   68 FIELD: FIELD . DOT ID
+
+    EQUALS  shift, and go to state 117
+    DOT     shift, and go to state 118
+
+
+State 97
+
+   48 Body: BEGIN1 S Ret . END1
+
+    END1  shift, and go to state 119
+
+
+State 98
+
+   31 idlist: idlist ',' id .
+
+    $default  reduce using rule 31 (idlist)
+
+
+State 99
+
+   97 Mainblock: type MAIN '(' ')' '{' LDefblock Body . '}'
+
+    '}'  shift, and go to state 120
+
+
+State 100
+
+   45 idlist2: idlist2 ',' id2 .
+
+    $default  reduce using rule 45 (idlist2)
+
+
+State 101
+
+   51 stmt: ID EQUALS . E ';'
+   62     | ID EQUALS . ALLOC '(' ')' ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    ALLOC  shift, and go to state 121
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 122
+
+
+State 102
+
+   69 FIELD: ID DOT . ID
+
+    ID  shift, and go to state 123
+
+
+State 103
+
+   52 stmt: ID '[' . E ']' EQUALS E ';'
+   63     | ID '[' . E ']' EQUALS ALLOC '(' ')' ';'
+   70 FIELD: ID '[' . E ']' DOT ID
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 124
+
+
+State 104
+
+   55 stmt: READ '(' . ID ')' ';'
+   56     | READ '(' . ID '[' E ']' ')' ';'
+   57     | READ '(' . FIELD ')' ';'
+
+    ID  shift, and go to state 125
+
+    FIELD  go to state 126
+
+
+State 105
+
+   58 stmt: WRITE '(' . E ')' ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 127
+
+
+State 106
+
+   59 stmt: IF '(' . E ')' THEN S ELSE S ENDIF ';'
+   60     | IF '(' . E ')' THEN S ENDIF ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 128
+
+
+State 107
+
+   61 stmt: WHILE '(' . E ')' DO S ENDWHILE ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 129
+
+
+State 108
+
+   93 E: NUM .
+
+    $default  reduce using rule 93 (E)
+
+
+State 109
+
+   69 FIELD: ID . DOT ID
+   70      | ID . '[' E ']' DOT ID
+   90 E: ID . '(' args ')'
+   94  | ID .
+   95  | ID . '[' E ']'
+
+    DOT  shift, and go to state 102
+    '['  shift, and go to state 130
+    '('  shift, and go to state 131
+
+    $default  reduce using rule 94 (E)
+
+
+State 110
+
+   89 E: NOT . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 132
+
+
+State 111
+
+   92 E: DEQUE . '(' ID ')'
+
+    '('  shift, and go to state 133
+
+
+State 112
+
+   80 E: '(' . E ')'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 134
+
+
+State 113
+
+   68 FIELD: FIELD . DOT ID
+   91 E: FIELD .
+
+    DOT  shift, and go to state 118
+
+    $default  reduce using rule 91 (E)
+
+
+State 114
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+   96 Ret: RETURN E . ';'
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ';'    shift, and go to state 148
+
+
+State 115
+
+   65 stmt: FREE '(' . ID ')' ';'
+   66     | FREE '(' . ID '[' E ']' ')' ';'
+   67     | FREE '(' . FIELD ')' ';'
+
+    ID  shift, and go to state 149
+
+    FIELD  go to state 150
+
+
+State 116
+
+   54 stmt: ENQUE '(' . ID ',' E ')' ';'
+
+    ID  shift, and go to state 151
+
+
+State 117
+
+   53 stmt: FIELD EQUALS . E ';'
+   64     | FIELD EQUALS . ALLOC '(' ')' ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    ALLOC  shift, and go to state 152
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 153
+
+
+State 118
+
+   68 FIELD: FIELD DOT . ID
+
+    ID  shift, and go to state 154
+
+
+State 119
+
+   48 Body: BEGIN1 S Ret END1 .
+
+    $default  reduce using rule 48 (Body)
+
+
+State 120
+
+   97 Mainblock: type MAIN '(' ')' '{' LDefblock Body '}' .
+
+    $default  reduce using rule 97 (Mainblock)
+
+
+State 121
+
+   62 stmt: ID EQUALS ALLOC . '(' ')' ';'
+
+    '('  shift, and go to state 155
+
+
+State 122
+
+   51 stmt: ID EQUALS E . ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ';'    shift, and go to state 156
+
+
+State 123
+
+   69 FIELD: ID DOT ID .
+
+    $default  reduce using rule 69 (FIELD)
+
+
+State 124
+
+   52 stmt: ID '[' E . ']' EQUALS E ';'
+   63     | ID '[' E . ']' EQUALS ALLOC '(' ')' ';'
+   70 FIELD: ID '[' E . ']' DOT ID
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ']'    shift, and go to state 157
+
+
+State 125
+
+   55 stmt: READ '(' ID . ')' ';'
+   56     | READ '(' ID . '[' E ']' ')' ';'
+   69 FIELD: ID . DOT ID
+   70      | ID . '[' E ']' DOT ID
+
+    DOT  shift, and go to state 102
+    '['  shift, and go to state 158
+    ')'  shift, and go to state 159
+
+
+State 126
+
+   57 stmt: READ '(' FIELD . ')' ';'
+   68 FIELD: FIELD . DOT ID
+
+    DOT  shift, and go to state 118
+    ')'  shift, and go to state 160
+
+
+State 127
+
+   58 stmt: WRITE '(' E . ')' ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ')'    shift, and go to state 161
+
+
+State 128
+
+   59 stmt: IF '(' E . ')' THEN S ELSE S ENDIF ';'
+   60     | IF '(' E . ')' THEN S ENDIF ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ')'    shift, and go to state 162
+
+
+State 129
+
+   61 stmt: WHILE '(' E . ')' DO S ENDWHILE ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ')'    shift, and go to state 163
+
+
+State 130
+
+   70 FIELD: ID '[' . E ']' DOT ID
+   95 E: ID '[' . E ']'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 164
+
+
+State 131
+
+   90 E: ID '(' . args ')'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    $default  reduce using rule 72 (args)
+
+    FIELD  go to state 113
+    args   go to state 165
+    ars    go to state 166
+    E      go to state 167
+
+
+State 132
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+   89  | NOT E .
+
+    $default  reduce using rule 89 (E)
+
+
+State 133
+
+   92 E: DEQUE '(' . ID ')'
+
+    ID  shift, and go to state 168
+
+
+State 134
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   80  | '(' E . ')'
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ')'    shift, and go to state 169
+
+
+State 135
+
+   81 E: E LT . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 170
+
+
+State 136
+
+   82 E: E GT . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 171
+
+
+State 137
+
+   85 E: E LE . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 172
+
+
+State 138
+
+   86 E: E GE . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 173
+
+
+State 139
+
+   83 E: E EQ . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 174
+
+
+State 140
+
+   84 E: E NE . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 175
+
+
+State 141
+
+   75 E: E PLUS . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 176
+
+
+State 142
+
+   76 E: E MINUS . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 177
+
+
+State 143
+
+   77 E: E MUL . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 178
+
+
+State 144
+
+   78 E: E DIV . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 179
+
+
+State 145
+
+   79 E: E MOD . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 180
+
+
+State 146
+
+   87 E: E AND . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 181
+
+
+State 147
+
+   88 E: E OR . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 182
+
+
+State 148
+
+   96 Ret: RETURN E ';' .
+
+    $default  reduce using rule 96 (Ret)
+
+
+State 149
+
+   65 stmt: FREE '(' ID . ')' ';'
+   66     | FREE '(' ID . '[' E ']' ')' ';'
+   69 FIELD: ID . DOT ID
+   70      | ID . '[' E ']' DOT ID
+
+    DOT  shift, and go to state 102
+    '['  shift, and go to state 183
+    ')'  shift, and go to state 184
+
+
+State 150
+
+   67 stmt: FREE '(' FIELD . ')' ';'
+   68 FIELD: FIELD . DOT ID
+
+    DOT  shift, and go to state 118
+    ')'  shift, and go to state 185
+
+
+State 151
+
+   54 stmt: ENQUE '(' ID . ',' E ')' ';'
+
+    ','  shift, and go to state 186
+
+
+State 152
+
+   64 stmt: FIELD EQUALS ALLOC . '(' ')' ';'
+
+    '('  shift, and go to state 187
+
+
+State 153
+
+   53 stmt: FIELD EQUALS E . ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ';'    shift, and go to state 188
+
+
+State 154
+
+   68 FIELD: FIELD DOT ID .
+
+    $default  reduce using rule 68 (FIELD)
+
+
+State 155
+
+   62 stmt: ID EQUALS ALLOC '(' . ')' ';'
+
+    ')'  shift, and go to state 189
+
+
+State 156
+
+   51 stmt: ID EQUALS E ';' .
+
+    $default  reduce using rule 51 (stmt)
+
+
+State 157
+
+   52 stmt: ID '[' E ']' . EQUALS E ';'
+   63     | ID '[' E ']' . EQUALS ALLOC '(' ')' ';'
+   70 FIELD: ID '[' E ']' . DOT ID
+
+    EQUALS  shift, and go to state 190
+    DOT     shift, and go to state 191
+
+
+State 158
+
+   56 stmt: READ '(' ID '[' . E ']' ')' ';'
+   70 FIELD: ID '[' . E ']' DOT ID
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 192
+
+
+State 159
+
+   55 stmt: READ '(' ID ')' . ';'
+
+    ';'  shift, and go to state 193
+
+
+State 160
+
+   57 stmt: READ '(' FIELD ')' . ';'
+
+    ';'  shift, and go to state 194
+
+
+State 161
+
+   58 stmt: WRITE '(' E ')' . ';'
+
+    ';'  shift, and go to state 195
+
+
+State 162
+
+   59 stmt: IF '(' E ')' . THEN S ELSE S ENDIF ';'
+   60     | IF '(' E ')' . THEN S ENDIF ';'
+
+    THEN  shift, and go to state 196
+
+
+State 163
+
+   61 stmt: WHILE '(' E ')' . DO S ENDWHILE ';'
+
+    DO  shift, and go to state 197
+
+
+State 164
+
+   70 FIELD: ID '[' E . ']' DOT ID
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+   95  | ID '[' E . ']'
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ']'    shift, and go to state 198
+
+
+State 165
+
+   90 E: ID '(' args . ')'
+
+    ')'  shift, and go to state 199
+
+
+State 166
+
+   71 args: ars .
+   73 ars: ars . ',' E
+
+    ','  shift, and go to state 200
+
+    $default  reduce using rule 71 (args)
+
+
+State 167
+
+   74 ars: E .
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+
+    $default  reduce using rule 74 (ars)
+
+
+State 168
+
+   92 E: DEQUE '(' ID . ')'
+
+    ')'  shift, and go to state 201
+
+
+State 169
+
+   80 E: '(' E ')' .
+
+    $default  reduce using rule 80 (E)
+
+
+State 170
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   81  | E LT E .
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 81 (E)
+
+
+State 171
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   82  | E GT E .
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 82 (E)
+
+
+State 172
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   85  | E LE E .
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 85 (E)
+
+
+State 173
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   86  | E GE E .
+   87  | E . AND E
+   88  | E . OR E
+
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 86 (E)
+
+
+State 174
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   83  | E EQ E .
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 83 (E)
+
+
+State 175
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   84  | E NE E .
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 84 (E)
+
+
+State 176
+
+   75 E: E . PLUS E
+   75  | E PLUS E .
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    MUL  shift, and go to state 143
+    DIV  shift, and go to state 144
+    MOD  shift, and go to state 145
+
+    $default  reduce using rule 75 (E)
+
+
+State 177
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   76  | E MINUS E .
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    MUL  shift, and go to state 143
+    DIV  shift, and go to state 144
+    MOD  shift, and go to state 145
+
+    $default  reduce using rule 76 (E)
+
+
+State 178
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   77  | E MUL E .
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    $default  reduce using rule 77 (E)
+
+
+State 179
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   78  | E DIV E .
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    $default  reduce using rule 78 (E)
+
+
+State 180
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   79  | E MOD E .
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    $default  reduce using rule 79 (E)
+
+
+State 181
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   87  | E AND E .
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+
+    $default  reduce using rule 87 (E)
+
+
+State 182
+
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+   88  | E OR E .
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+
+    $default  reduce using rule 88 (E)
+
+
+State 183
+
+   66 stmt: FREE '(' ID '[' . E ']' ')' ';'
+   70 FIELD: ID '[' . E ']' DOT ID
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 202
+
+
+State 184
+
+   65 stmt: FREE '(' ID ')' . ';'
+
+    ';'  shift, and go to state 203
+
+
+State 185
+
+   67 stmt: FREE '(' FIELD ')' . ';'
+
+    ';'  shift, and go to state 204
+
+
+State 186
+
+   54 stmt: ENQUE '(' ID ',' . E ')' ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 205
+
+
+State 187
+
+   64 stmt: FIELD EQUALS ALLOC '(' . ')' ';'
+
+    ')'  shift, and go to state 206
+
+
+State 188
+
+   53 stmt: FIELD EQUALS E ';' .
+
+    $default  reduce using rule 53 (stmt)
+
+
+State 189
+
+   62 stmt: ID EQUALS ALLOC '(' ')' . ';'
+
+    ';'  shift, and go to state 207
+
+
+State 190
+
+   52 stmt: ID '[' E ']' EQUALS . E ';'
+   63     | ID '[' E ']' EQUALS . ALLOC '(' ')' ';'
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    ALLOC  shift, and go to state 208
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 209
+
+
+State 191
+
+   70 FIELD: ID '[' E ']' DOT . ID
+
+    ID  shift, and go to state 210
+
+
+State 192
+
+   56 stmt: READ '(' ID '[' E . ']' ')' ';'
+   70 FIELD: ID '[' E . ']' DOT ID
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ']'    shift, and go to state 211
+
+
+State 193
+
+   55 stmt: READ '(' ID ')' ';' .
+
+    $default  reduce using rule 55 (stmt)
+
+
+State 194
+
+   57 stmt: READ '(' FIELD ')' ';' .
+
+    $default  reduce using rule 57 (stmt)
+
+
+State 195
+
+   58 stmt: WRITE '(' E ')' ';' .
+
+    $default  reduce using rule 58 (stmt)
+
+
+State 196
+
+   59 stmt: IF '(' E ')' THEN . S ELSE S ENDIF ';'
+   60     | IF '(' E ')' THEN . S ENDIF ';'
+
+    $default  reduce using rule 50 (S)
+
+    S  go to state 212
+
+
+State 197
+
+   61 stmt: WHILE '(' E ')' DO . S ENDWHILE ';'
+
+    $default  reduce using rule 50 (S)
+
+    S  go to state 213
+
+
+State 198
+
+   70 FIELD: ID '[' E ']' . DOT ID
+   95 E: ID '[' E ']' .
+
+    DOT  shift, and go to state 191
+
+    $default  reduce using rule 95 (E)
+
+
+State 199
+
+   90 E: ID '(' args ')' .
+
+    $default  reduce using rule 90 (E)
+
+
+State 200
+
+   73 ars: ars ',' . E
+
+    NUM    shift, and go to state 108
+    ID     shift, and go to state 109
+    NOT    shift, and go to state 110
+    DEQUE  shift, and go to state 111
+    '('    shift, and go to state 112
+
+    FIELD  go to state 113
+    E      go to state 214
+
+
+State 201
+
+   92 E: DEQUE '(' ID ')' .
+
+    $default  reduce using rule 92 (E)
+
+
+State 202
+
+   66 stmt: FREE '(' ID '[' E . ']' ')' ';'
+   70 FIELD: ID '[' E . ']' DOT ID
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ']'    shift, and go to state 215
+
+
+State 203
+
+   65 stmt: FREE '(' ID ')' ';' .
+
+    $default  reduce using rule 65 (stmt)
+
+
+State 204
+
+   67 stmt: FREE '(' FIELD ')' ';' .
+
+    $default  reduce using rule 67 (stmt)
+
+
+State 205
+
+   54 stmt: ENQUE '(' ID ',' E . ')' ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ')'    shift, and go to state 216
+
+
+State 206
+
+   64 stmt: FIELD EQUALS ALLOC '(' ')' . ';'
+
+    ';'  shift, and go to state 217
+
+
+State 207
+
+   62 stmt: ID EQUALS ALLOC '(' ')' ';' .
+
+    $default  reduce using rule 62 (stmt)
+
+
+State 208
+
+   63 stmt: ID '[' E ']' EQUALS ALLOC . '(' ')' ';'
+
+    '('  shift, and go to state 218
+
+
+State 209
+
+   52 stmt: ID '[' E ']' EQUALS E . ';'
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+    ';'    shift, and go to state 219
+
+
+State 210
+
+   70 FIELD: ID '[' E ']' DOT ID .
+
+    $default  reduce using rule 70 (FIELD)
+
+
+State 211
+
+   56 stmt: READ '(' ID '[' E ']' . ')' ';'
+   70 FIELD: ID '[' E ']' . DOT ID
+
+    DOT  shift, and go to state 191
+    ')'  shift, and go to state 220
+
+
+State 212
+
+   49 S: S . stmt
+   59 stmt: IF '(' E ')' THEN S . ELSE S ENDIF ';'
+   60     | IF '(' E ')' THEN S . ENDIF ';'
+
+    ID     shift, and go to state 87
+    READ   shift, and go to state 88
+    WRITE  shift, and go to state 89
+    IF     shift, and go to state 90
+    ENDIF  shift, and go to state 221
+    WHILE  shift, and go to state 91
+    ELSE   shift, and go to state 222
+    FREE   shift, and go to state 93
+    ENQUE  shift, and go to state 94
+
+    stmt   go to state 95
+    FIELD  go to state 96
+
+
+State 213
+
+   49 S: S . stmt
+   61 stmt: WHILE '(' E ')' DO S . ENDWHILE ';'
+
+    ID        shift, and go to state 87
+    READ      shift, and go to state 88
+    WRITE     shift, and go to state 89
+    IF        shift, and go to state 90
+    WHILE     shift, and go to state 91
+    ENDWHILE  shift, and go to state 223
+    FREE      shift, and go to state 93
+    ENQUE     shift, and go to state 94
+
+    stmt   go to state 95
+    FIELD  go to state 96
+
+
+State 214
+
+   73 ars: ars ',' E .
+   75 E: E . PLUS E
+   76  | E . MINUS E
+   77  | E . MUL E
+   78  | E . DIV E
+   79  | E . MOD E
+   81  | E . LT E
+   82  | E . GT E
+   83  | E . EQ E
+   84  | E . NE E
+   85  | E . LE E
+   86  | E . GE E
+   87  | E . AND E
+   88  | E . OR E
+
+    LT     shift, and go to state 135
+    GT     shift, and go to state 136
+    LE     shift, and go to state 137
+    GE     shift, and go to state 138
+    EQ     shift, and go to state 139
+    NE     shift, and go to state 140
+    PLUS   shift, and go to state 141
+    MINUS  shift, and go to state 142
+    MUL    shift, and go to state 143
+    DIV    shift, and go to state 144
+    MOD    shift, and go to state 145
+    AND    shift, and go to state 146
+    OR     shift, and go to state 147
+
+    $default  reduce using rule 73 (ars)
+
+
+State 215
+
+   66 stmt: FREE '(' ID '[' E ']' . ')' ';'
+   70 FIELD: ID '[' E ']' . DOT ID
+
+    DOT  shift, and go to state 191
+    ')'  shift, and go to state 224
+
+
+State 216
+
+   54 stmt: ENQUE '(' ID ',' E ')' . ';'
+
+    ';'  shift, and go to state 225
+
+
+State 217
+
+   64 stmt: FIELD EQUALS ALLOC '(' ')' ';' .
+
+    $default  reduce using rule 64 (stmt)
+
+
+State 218
+
+   63 stmt: ID '[' E ']' EQUALS ALLOC '(' . ')' ';'
+
+    ')'  shift, and go to state 226
+
+
+State 219
+
+   52 stmt: ID '[' E ']' EQUALS E ';' .
+
+    $default  reduce using rule 52 (stmt)
+
+
+State 220
+
+   56 stmt: READ '(' ID '[' E ']' ')' . ';'
+
+    ';'  shift, and go to state 227
+
+
+State 221
+
+   60 stmt: IF '(' E ')' THEN S ENDIF . ';'
+
+    ';'  shift, and go to state 228
+
+
+State 222
+
+   59 stmt: IF '(' E ')' THEN S ELSE . S ENDIF ';'
+
+    $default  reduce using rule 50 (S)
+
+    S  go to state 229
+
+
+State 223
+
+   61 stmt: WHILE '(' E ')' DO S ENDWHILE . ';'
+
+    ';'  shift, and go to state 230
+
+
+State 224
+
+   66 stmt: FREE '(' ID '[' E ']' ')' . ';'
+
+    ';'  shift, and go to state 231
+
+
+State 225
+
+   54 stmt: ENQUE '(' ID ',' E ')' ';' .
+
+    $default  reduce using rule 54 (stmt)
+
+
+State 226
+
+   63 stmt: ID '[' E ']' EQUALS ALLOC '(' ')' . ';'
+
+    ';'  shift, and go to state 232
+
+
+State 227
+
+   56 stmt: READ '(' ID '[' E ']' ')' ';' .
+
+    $default  reduce using rule 56 (stmt)
+
+
+State 228
+
+   60 stmt: IF '(' E ')' THEN S ENDIF ';' .
+
+    $default  reduce using rule 60 (stmt)
+
+
+State 229
+
+   49 S: S . stmt
+   59 stmt: IF '(' E ')' THEN S ELSE S . ENDIF ';'
+
+    ID     shift, and go to state 87
+    READ   shift, and go to state 88
+    WRITE  shift, and go to state 89
+    IF     shift, and go to state 90
+    ENDIF  shift, and go to state 233
+    WHILE  shift, and go to state 91
+    FREE   shift, and go to state 93
+    ENQUE  shift, and go to state 94
+
+    stmt   go to state 95
+    FIELD  go to state 96
+
+
+State 230
+
+   61 stmt: WHILE '(' E ')' DO S ENDWHILE ';' .
+
+    $default  reduce using rule 61 (stmt)
+
+
+State 231
+
+   66 stmt: FREE '(' ID '[' E ']' ')' ';' .
+
+    $default  reduce using rule 66 (stmt)
+
+
+State 232
+
+   63 stmt: ID '[' E ']' EQUALS ALLOC '(' ')' ';' .
+
+    $default  reduce using rule 63 (stmt)
+
+
+State 233
+
+   59 stmt: IF '(' E ')' THEN S ELSE S ENDIF . ';'
+
+    ';'  shift, and go to state 234
+
+
+State 234
+
+   59 stmt: IF '(' E ')' THEN S ELSE S ENDIF ';' .
+
+    $default  reduce using rule 59 (stmt)

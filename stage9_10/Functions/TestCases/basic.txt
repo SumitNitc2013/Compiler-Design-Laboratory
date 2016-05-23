@@ -1,0 +1,19 @@
+decl
+integer fun(integer x);
+enddecl
+
+integer fun(integer x)
+{
+	begin
+		x=x+5;
+		return x;
+	end
+}
+
+integer main()
+{
+	begin
+		write(fun(10));
+		return 100;			
+	end
+}

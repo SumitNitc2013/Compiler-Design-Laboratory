@@ -1,0 +1,14 @@
+decl
+	sum,x,i;
+enddecl
+
+begin
+	read(x);
+	i=1;
+	sum=0;
+	while(i<=x) do
+		sum=sum+i;
+		i=i+1;
+	endwhile;
+	write(sum);
+end

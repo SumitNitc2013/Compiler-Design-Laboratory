@@ -1,0 +1,23 @@
+decl
+	integer n,a[100];
+	integer i,k1,k2;
+enddecl
+
+begin
+	read(n);
+	i=0;
+	while(i<n) do
+		read(a[i]);
+		i=i+1;
+	endwhile;
+
+	read(k1);
+	read(k2);
+	i=0;
+	while(i<n) do
+		if(a[i]>=k1 AND a[i]<=k2) then
+			write(a[i]);
+		endif;
+		i=i+1;
+	endwhile;
+end

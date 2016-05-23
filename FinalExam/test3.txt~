@@ -1,0 +1,39 @@
+decl
+	integer merge(queue &q1,&q2);
+enddecl
+
+integer main()
+{
+	decl
+		integer i,n,x;
+		queue q1,q2,q3;
+	enddecl
+
+	begin
+		read(n);
+		i=0;
+		while(i<n) do
+			read(x);
+			enque(q1,x);
+			i=i+1;
+		endwhile;
+
+		read(n);
+		i=0;
+		while(i<n) do
+			read(x);
+			enque(q2,x);
+			i=i+1;
+		endwhile;
+
+		x=merge(q1,q2);
+
+		x=deque(q3);
+
+		while(x!=0) do
+			write(x);
+			x=deque(q3);
+		endwhile;
+		return 1;
+	end
+}

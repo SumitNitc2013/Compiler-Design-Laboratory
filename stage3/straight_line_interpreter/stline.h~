@@ -1,0 +1,19 @@
+//this is a header file
+struct node
+{
+	int val;
+	char* op;
+	char var;
+	struct node *left,*right;
+};
+
+typedef struct node tnode;
+
+tnode* makeNumLeafNode(int n);
+
+tnode* makeVarLeafNode(char var);
+
+tnode* makeOperatornode(char c,tnode* left,tnode* right);
+
+int evaluate(tnode* r);     //r is the root of the tree
+

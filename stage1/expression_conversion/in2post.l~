@@ -1,0 +1,34 @@
+%{
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <stdio.h>
+	#define YYSTYPE char*
+	#include "y.tab.h"
+	
+%}
+
+number [0-9]+
+op     [-+*^/]
+
+%%
+{number} {yylval=(char*)malloc(100*sizeof(char));
+	  int i;
+	  for(i=0;i<yyleng;i++)
+		yylval[i]=yytext[i];
+	  yylval[yyleng]='\0';
+	  return NUM;
+	}
+{op} {return *yytext;}
+"\n" {return *yytext;}
+%%
+
+yywrap()
+{
+	return 1;
+}
+
+
+
+
+

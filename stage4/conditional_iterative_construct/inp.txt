@@ -1,0 +1,14 @@
+begin
+x=5;y=6;
+read(z);
+d=0;
+if(z>15) then
+d=10;
+endif;
+while(z<10) do
+write(z);
+z=z+1;
+endwhile;
+c=x+y*z;
+write(c);
+end

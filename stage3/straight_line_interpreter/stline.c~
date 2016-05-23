@@ -1,0 +1,67 @@
+tnode* makeNumLeafNode(int n)
+{
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	leaf->val=n;
+	leaf->op=NULL;
+	leaf->left=NULL;
+	leaf->right=NULL;
+	return leaf;
+}
+
+tnode* makeVarLeafNode(char var)
+{
+	tnode* leaf;
+	leaf=(tnode*)malloc(sizeof(tnode));
+	leaf->op=NULL;
+	leaf->var=var;
+	leaf->left=NULL;
+	leaf->right=NULL;
+	return leaf;
+}
+
+tnode* makeOperatorNode(char c,tnode* left,tnode* right)
+{
+	tnode* operator_node;
+	operator_node=(tnode*)malloc(sizeof(tnode));
+	operator_node->op=(char*)malloc(sizeof(char));
+	*(operator_node->op)=c;
+	operator_node->left=left;
+	operator_node->right=right;
+	return operator_node;
+}
+
+int evaluate(tnode* r)
+{
+	if(r->op==NULL && (r->var)>='a' && (r->var)<='z')
+		return array[r->var-97];
+
+	else if(r->op==NULL)
+		return r->val;
+
+	else
+	{
+		switch(*(r->op))
+		{
+			case '+':
+				return evaluate(r->left)+evaluate(r->right);
+				break;
+
+			case '-':
+				return evaluate(r->left)-evaluate(r->right);
+				break;
+
+			case '*':
+				return evaluate(r->left)*evaluate(r->right);
+				break;
+
+			case '/':
+				return evaluate(r->left)/evaluate(r->right);
+				break;
+
+			case '^':
+				return pow(evaluate(r->left),evaluate(r->right));
+				break;
+		}
+	}
+}

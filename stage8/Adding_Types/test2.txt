@@ -1,0 +1,32 @@
+decl
+	integer x,y,z;
+	integer m[11];
+	
+	
+enddecl
+
+begin
+	read(x);
+	y=1;
+	z=1;
+	while(z<x+1) do
+			y=y*z;
+			z=z+1;
+	endwhile;
+	write(y);
+	if(y==120) then
+		write(1);
+	else
+		write(0);
+	endif;
+	z=1;
+	while(z<11) do
+		m[z]=z;
+		z=z+1;
+	endwhile;
+	z=1;
+	while(z<11) do
+		write(m[z]);
+		z=z+1;
+	endwhile;
+end

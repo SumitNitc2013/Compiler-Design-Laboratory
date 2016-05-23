@@ -1,0 +1,74 @@
+%{
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define YYSTYPE char*
+%}
+
+%token NUM
+%left '+' '-'
+%left '*' '/'
+%right '^'
+
+%%
+
+start : expr '\n'		{printf("%s\n",$1);exit(1);}
+      ;
+
+expr: expr '+' expr     {$$=(char*)malloc(100*sizeof(char));
+			strcpy($$,"+");
+			strcat($$," ");
+			strcat($$,$1);
+			strcat($$," ");
+			strcat($$,$3);
+			}
+
+    | expr '-' expr      {$$=(char*)malloc(100*sizeof(char));
+			strcpy($$,"-");
+			strcat($$," ");
+			strcat($$,$1);
+			strcat($$," ");
+			strcat($$,$3);
+			}
+
+    | expr '*' expr      { $$=(char*)malloc(100*sizeof(char));
+			strcpy($$,"*");
+			strcat($$," ");
+			strcat($$,$1);
+			strcat($$," ");
+			strcat($$,$3);
+			}
+
+    | expr '/' expr      {$$=(char*)malloc(100*sizeof(char));
+			strcpy($$,"/");
+			strcat($$," ");
+			strcat($$,$1);
+			strcat($$," ");
+			strcat($$,$3);
+			}
+
+    | expr '^' expr      {$$=(char*)malloc(100*sizeof(char));
+			strcpy($$,"^");
+			strcat($$," ");
+			strcat($$,$1);
+			strcat($$," ");
+			strcat($$,$3);
+			}
+    | '('expr')'		{$$ = $2;}
+    | NUM             		{$$=$1;}
+    ;
+
+%%
+
+yyerror(char const *s)
+{
+    printf("error %s\n",s);
+}
+
+main()
+{
+	yyparse();
+	return 1;
+}
+

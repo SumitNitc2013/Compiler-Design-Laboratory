@@ -1,0 +1,22 @@
+//this is a header file
+struct node
+{
+	//NODETYPE=0-NUM,1-ID,2-NAME etc
+	int NODETYPE;
+	int val;
+	char var;       //to make leaf nodes for variables a-z
+	char* NAME;
+	struct node *left, *right;
+};
+
+typedef struct node tnode;
+
+tnode* makeNumLeafNode(int n);
+
+tnode* makeVarLeafNode(char var);
+
+tnode* makeNameNode(char c[],tnode* left,tnode* right);
+
+int evaluate(tnode* r);     //r is the root of the tree
+
+

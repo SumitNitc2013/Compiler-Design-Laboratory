@@ -1,0 +1,44 @@
+%{
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+%}
+
+%token NUM
+%left '+' '-'
+%left '*' '/'
+%right '^'
+
+%%
+
+start : expr '\n'		{printf("\n");
+				exit(0);
+				}
+      ;
+
+expr: expr '+' expr     {printf("+ ");}
+
+    | expr '-' expr      {printf("- ");}
+
+    | expr '*' expr      {printf("* ");}
+    | expr '/' expr      {printf("/ ");}
+
+    | expr '^' expr      {printf("^ ");}
+    | '('expr')'
+    | NUM             		{printf("%d ",$1);}
+    ;
+
+%%
+
+yyerror(char const *s)
+{
+    printf("error %s\n",s);
+}
+
+main()
+{
+	yyparse();
+	return 1;
+}
+
